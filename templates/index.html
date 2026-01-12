@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Outil PDF</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; line-height: 1.6; }
+        .card { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 8px; background: #f9f9f9; }
+        h2 { color: #333; margin-top: 0; }
+        input[type="file"] { margin-bottom: 10px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .warning { color: #856404; background-color: #fff3cd; padding: 10px; border-radius: 5px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <h1>🛠 Boîte à outils PDF & Fichiers</h1>
+    <p class="warning">Note : Les fonctions Word/Excel vers PDF ne fonctionnent que sous Windows (désactivées sur Render).</p>
+
+    <div class="card">
+        <h2>1. Fusionner des PDF</h2>
+        <form action="/merge" method="post" enctype="multipart/form-data">
+            <input type="file" name="pdfs" multiple accept=".pdf" required>
+            <button type="submit">Fusionner</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>2. PDF vers Word</h2>
+        <form action="/pdf-to-word" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".pdf" required>
+            <button type="submit">Convertir en Word</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>3. Image vers PDF</h2>
+        <form action="/img" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <button type="submit">Convertir en PDF</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>4. Créer un ZIP</h2>
+        <form action="/zip" method="post" enctype="multipart/form-data">
+            <input type="file" name="files" multiple required>
+            <button type="submit">Compresser en ZIP</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>5. Protéger un PDF (Mot de passe)</h2>
+        <form action="/protect" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".pdf" required><br>
+            <input type="password" name="pw" placeholder="Mot de passe" required>
+            <button type="submit">Protéger</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>6. Extraire des pages spécifiques</h2>
+        <form action="/remove-pages" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".pdf" required><br>
+            <input type="text" name="pages" placeholder="Ex: 1, 2, 5" required>
+            <button type="submit">Extraire</button>
+        </form>
+    </div>
+
+</body>
+</html>
