@@ -5,3 +5,6 @@ pdf2docx
 pillow
 pandas
 openpyxl
+docx2pdf
+python-docx
+docx2python
