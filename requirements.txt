@@ -2,8 +2,10 @@ flask
 gunicorn
 pypdf
 pdf2docx
+docx2pdf
 pillow
 pandas
 openpyxl
 python-docx
 python-pptx
+tabula-py
