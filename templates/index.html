@@ -1,107 +1,25 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Expert - Outils Gratuits</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #f8f9fa; }
-        .navbar { background-color: #0d6efd; color: white; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .card { border: none; border-radius: 12px; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-        .btn-primary { border-radius: 8px; font-weight: bold; }
-        h1 { font-weight: 800; color: #333; }
-    </style>
-</head>
-<body>
-
 <nav class="navbar p-3">
     <div class="container">
-        <span class="navbar-brand mb-0 h1 text-white">🛠 PDF Expert</span>
+        <span class="navbar-brand mb-0 h1 text-white">🚀 MegaConvertisseur</span>
     </div>
 </nav>
 
-<div class="container">
-    <div class="text-center mb-5">
-        <h1>Transformez vos fichiers</h1>
-        <p class="text-muted">Simple, rapide et sécurisé.</p>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card h-100 p-4 text-center">
-                <h3>Fusionner</h3>
-                <p class="small text-muted">Assemblez plusieurs PDF en un seul.</p>
-                <form action="/merge" method="post" enctype="multipart/form-data">
-                    <input type="file" name="pdfs" class="form-control mb-3" multiple accept=".pdf" required>
-                    <button class="btn btn-primary w-100">Fusionner</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 p-4 text-center">
-                <h3>PDF vers Word</h3>
-                <p class="small text-muted">Convertissez vos PDF en .docx</p>
-                <form action="/pdf-to-word" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" class="form-control mb-3" accept=".pdf" required>
-                    <button class="btn btn-primary w-100">Convertir</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 p-4 text-center">
-                <h3>Image vers PDF</h3>
-                <p class="small text-muted">JPG, PNG vers document PDF.</p>
-                <form action="/img" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" class="form-control mb-3" accept="image/*" required>
-                    <button class="btn btn-primary w-100">Convertir</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 p-4 text-center">
-                <h3>Créer un ZIP</h3>
-                <p class="small text-muted">Compressez vos fichiers.</p>
-                <form action="/zip" method="post" enctype="multipart/form-data">
-                    <input type="file" name="files" class="form-control mb-3" multiple required>
-                    <button class="btn btn-primary w-100">Compresser</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 p-4 text-center">
-                <h3>Protéger</h3>
-                <p class="small text-muted">Ajoutez un mot de passe.</p>
-                <form action="/protect" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" class="form-control mb-3" accept=".pdf" required>
-                    <input type="password" name="pw" class="form-control mb-3" placeholder="Mot de passe" required>
-                    <button class="btn btn-primary w-100">Protéger</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 p-4 text-center">
-                <h3>Extraire Pages</h3>
-                <p class="small text-muted">Ex: 1, 2, 5</p>
-                <form action="/remove-pages" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" class="form-control mb-3" accept=".pdf" required>
-                    <input type="text" name="pages" class="form-control mb-3" placeholder="Pages (ex: 1,2)" required>
-                    <button class="btn btn-primary w-100">Extraire</button>
-                </form>
-            </div>
-        </div>
+<div class="col-md-4">
+    <div class="card h-100 p-4 text-center border-success">
+        <h3>Excel vers Word</h3>
+        <form action="/excel-to-word" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" class="form-control mb-3" accept=".xlsx,.xls" required>
+            <button class="btn btn-success w-100">Convertir</button>
+        </form>
     </div>
 </div>
 
-<footer class="text-center mt-5 p-4 text-muted">
-    &copy; 2026 PDF Expert - Tous droits réservés
-</footer>
-
-</body>
-</html>
+<div class="col-md-4">
+    <div class="card h-100 p-4 text-center border-info">
+        <h3>Word vers Excel</h3>
+        <form action="/word-to-excel" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" class="form-control mb-3" accept=".docx" required>
+            <button class="btn btn-info w-100 text-white">Convertir</button>
+        </form>
+    </div>
+</div>
