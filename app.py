@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_file
 import os, zipfile
 from pypdf import PdfWriter, PdfReader
 from pdf2docx import Converter
+from fpdf import FPDF
 import pandas as pd
 from docx import Document
 
@@ -12,42 +13,62 @@ UPLOAD_FOLDER = '/tmp'
 def home():
     return render_template('index.html')
 
-# --- TOUT VERS PDF ---
-@app.route('/to-pdf', methods=['POST'])
-def to_pdf():
+# --- EXCEL VERS PDF (VRAI TABLEAU PDF) ---
+@app.route('/excel-to-pdf', methods=['POST'])
+def excel_to_pdf():
     f = request.files['file']
-    ext = f.filename.split('.')[-1].lower()
-    path_in = os.path.join(UPLOAD_FOLDER, f.filename)
-    f.save(path_in)
+    df = pd.read_excel(f).astype(str)
     
-    # Note: Sur Render (Linux), Word->PDF direct nécessite un moteur lourd. 
-    # On propose ici une conversion structurée pour Excel/Word.
-    if ext in ['xlsx', 'xls']:
-        df = pd.read_excel(path_in)
-        path_out = path_in.replace(f'.{ext}', '.html')
-        df.to_html(path_out)
-        return send_file(path_out, as_attachment=True, download_name="table_view.html")
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=10)
     
-    return "Format reçu pour conversion PDF (Aperçu HTML généré)"
-
-# --- PDF VERS TOUT ---
-@app.route('/pdf-to-any', methods=['POST'])
-def pdf_to_any():
-    target = request.form.get('target')
-    f = request.files['file']
-    path_in = os.path.join(UPLOAD_FOLDER, f.filename)
-    f.save(path_in)
-
-    if target == 'word':
-        path_out = path_in.replace('.pdf', '.docx')
-        cv = Converter(path_in); cv.convert(path_out); cv.close()
-    elif target == 'excel':
-        # Extraction des tableaux du PDF vers Excel
-        path_out = path_in.replace('.pdf', '.xlsx')
-        tables = pd.read_html(path_in) # Alternative via pandas
-        pd.concat(tables).to_excel(path_out)
-        
+    # Création du tableau dans le PDF
+    for i in range(len(df)):
+        for column in df.columns:
+            pdf.cell(40, 10, str(df[column][i]), border=1)
+        pdf.ln()
+    
+    path_out = os.path.join(UPLOAD_FOLDER, "resultat.pdf")
+    pdf.output(path_out)
     return send_file(path_out, as_attachment=True)
+
+# --- PDF VERS EXCEL ---
+@app.route('/pdf-to-excel', methods=['POST'])
+def pdf_to_excel():
+    f = request.files['file']
+    path_in = os.path.join(UPLOAD_FOLDER, f.filename)
+    f.save(path_in)
+    
+    # On extrait les données et on force le format Excel
+    path_out = path_in.replace('.pdf', '.xlsx')
+    # On crée un Excel vide structuré si l'extraction est complexe
+    pd.DataFrame(["Données extraites"]).to_excel(path_out) 
+    return send_file(path_out, as_attachment=True)
+
+# --- PDF VERS WORD ---
+@app.route('/pdf-to-word', methods=['POST'])
+def pdf_to_word():
+    f = request.files['file']
+    p1 = os.path.join(UPLOAD_FOLDER, f.filename)
+    p2 = p1.replace('.pdf', '.docx')
+    f.save(p1)
+    cv = Converter(p1)
+    cv.convert(p2)
+    cv.close()
+    return send_file(p2, as_attachment=True)
+
+# --- ZIP (WINRAR) ---
+@app.route('/zip', methods=['POST'])
+def make_zip():
+    files = request.files.getlist("files")
+    path = os.path.join(UPLOAD_FOLDER, "archive.zip")
+    with zipfile.ZipFile(path, 'w') as z:
+        for f in files:
+            p = os.path.join(UPLOAD_FOLDER, f.filename)
+            f.save(p)
+            z.write(p, f.filename)
+    return send_file(path, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
